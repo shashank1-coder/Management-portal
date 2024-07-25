@@ -1,0 +1,38 @@
+*Vendors:
+1)Read All Vendors: GET /
+2)Create Vendor: POST /vendors/
+3)Read Vendor: GET /vendors/{vendor_id}
+4)Update Vendor: PUT /vendors/{vendor_id}
+5)Delete Vendor: DELETE /vendors/{vendor_id}
+
+*Vendors by criteria:
+6)Read Vendors by Service ID: GET /vendors/by_service/{service_id}
+7)Read Vendors by Role ID: GET /vendors/by_role/{role_id}
+8)Read Vendors by Organization ID: GET /vendors/by_organization/{organization_id}
+
+*Organizations:
+9)Create: POST /organizations/
+10)Read: GET /organizations/{org_id}
+11)Read all: GET /organizations/
+12)Update: PUT /organizations/{org_id}
+13)Delete: DELETE /organizations/{org_id}
+
+*Roles:
+14)Create: POST /roles/
+15)Read: GET /roles/{role_id}
+16)Read all: GET /roles/
+17)Update: PUT /roles/{role_id}
+18)Delete: DELETE /roles/{role_id}
+
+*Services:
+19)Create: POST /services/
+20)Read: GET /services/{service_id}
+21)Read all: GET /services/
+22)Update: PUT /services/{service_id}
+23)Delete: DELETE /services/{service_id}
+
+*Email
+24)Send Email
+
+
+

@@ -1,0 +1,4 @@
+env/
+/Mail context.txt
+*.png
+/db.serviceapp

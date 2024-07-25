@@ -1,0 +1,122 @@
+body {
+    margin: 0;
+    display: flex;
+  }
+
+
+  .navbar{
+    background-color: #1f2c38;
+  }
+  
+  .navbar-toggler1{
+    
+    padding: var(--bs-navbar-toggler-padding-y) var(--bs-navbar-toggler-padding-x);
+    font-size: var(--bs-navbar-toggler-font-size);
+    line-height: 1;
+    color: var(--bs-navbar-color);
+    background-color:  rgb(250, 251, 252);
+    border: var(--bs-border-width) solid var(--bs-navbar-toggler-border-color);
+    border-radius: var(--bs-navbar-toggler-border-radius);
+    transition: var(--bs-navbar-toggler-transition);
+  }
+  
+  .sidebar {
+    width: 250px; /* Adjust width as needed */
+    position: fixed;
+    height: 100%;
+    background-color: #1f2c38; /* Sidebar background color */
+    padding-top: 85px;
+  }
+
+
+/*sidebar*/
+  .list-group-item.list-group-item-action{
+    background-color: #1f2c38;
+    color: aliceblue
+  }
+
+
+
+  
+  .main-content {
+    margin-top: 55px;
+    margin-left: 250px; /* Same as sidebar width */
+    padding: 20px;
+    width: calc(100% - 250px); /* Adjust width as needed */
+  }
+
+
+  /*Student Details*/
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Ensure elements wrap on smaller screens */
+  }
+  
+  .header h1 {
+    margin: 0;
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    margin-left: 1100px; /* Ensure it moves to the far right */
+  }
+  
+  .search-bar {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    width: 200px;
+  }
+  
+  .search-button {
+    padding: 8px 16px;
+    font-size: 16px;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: white;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .search-button:hover {
+    background-color: #0056b3;
+  }
+
+
+  .student-details p {
+    font-size: large;
+    font-family: Arial, Verdana, sans-serif;
+  }
+
+  .student-details ul {
+    font-size: large; 
+    font-family: Arial, Verdana, sans-serif;
+  }
+
+  /*Student Component*/
+  .table-data td{
+    font-family: Arial, Verdana, sans-serif;
+    
+  }
+
+  /* .std-body{
+    font-size:150%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 4rem;
+    } */
+    
+  .std-body{
+        font-size:25px;
+      }
+      
+
+    

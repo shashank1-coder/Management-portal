@@ -1,0 +1,31 @@
+
+
+.container {
+  padding-top: 75px; /* Adjust this value based on the height of your navbar */
+  margin-left: 250px;
+}
+
+
+/* src/Components/Sidebar.css
+#sidebar-wrapper {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  z-index: 1000;
+  top: 60px;
+  overflow-y: auto;
+}
+
+#page-content-wrapper {
+  flex: 1;
+  padding: 20px;
+  width: 100%;
+  margin-left: 250px;
+  margin-top: 20px;
+} */
+
+
+.carousel-item img {
+  height: 550px;
+  width: 700px;
+}

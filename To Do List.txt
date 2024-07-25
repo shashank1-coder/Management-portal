@@ -1,0 +1,89 @@
+#Requirements
+1)Vendors table with its contents as {id, Name, Organization, Role/Service, Email, Phone No}
+2)CRUD operations to Vendors
+3)Email endpoint which can fire emails to selected people with same content
+4)Database ?
+5)Backend API framework ?
+6)Frontend framework ?
+
+
+#Database 
+Dependencies- pip install sqlalchemy databases[sqlite] alembic
+
+1)Select Database 
+2)Create engine and session
+3)Create Table with Tablename Vendors and its contents are {primary key: id, Name, Organization, Role,Service, Email, Phone No}
+4)Create Table with Tablename Organization its contents are { primary key: id, Organization Name}
+5)Create Table with Tablename Service its contents are {primary key: id, Organization Name, Role,Service}
+6)Create Table with Tablename Contact {id, name , Email, Phone} 
+7)Create Table with Tablename Users {id, Admin , User}
+8)Vendor Table should have Oraganization name as a foreign key which refers to the primary key of Organization Table.
+9)Create relationship between Vendor and Role
+10)Create relationship between Vendor and Service
+
+#Backend 
+Dependencies- Install python from https://www.python.org/downloads
+python -m venv env
+source env/bin/activate  # On Windows use `env\Scripts\activate`
+pip install fastapi uvicorn pydantic 
+
+1)Select a web API frameworks (FastAPI,Flask)
+2)Connect to the database
+3)Set Schemas of the table
+4)Create pydantic models for the endpoints
+5)Root (/) endpoint to read all vendors
+5)Create Vendor endpoint with these (Name, Org name, Email, Phone, Service, Role) parameters
+6)Read Vendor endpoint for specific vendor id 
+7)Update specific Vendor endpoint
+8)Delete specific Vendor endpoint
+9)Send Email endpoint  
+10)Create Org endpoint
+11)Update Org endpoint
+12)Delete Org endpoint
+13)Read org with org id endpoint
+14)Read all org endpoint
+15Create Role endpoint
+16)Read all Roles endpoint
+17)Update Role endpoint
+18)Delete Role endpoint
+19)Read role with id endpoint
+20)Create Service endpoint
+21)Read all Service endpoint
+22)Read Service with id endpoint
+23)Update Service endpoint
+24)Delete Service endpoint
+25)Read vendors by Service endpoint 
+26)Read vendors by Role endpoint
+27)Read vendors by org name  endpoint
+
+13)Read Users endpoint
+14)Update Users endpoint
+15)Delete Users endpoint
+
+Start the FastAPI server: uvicorn app.main:app --reload
+
+
+#Frontend 
+Dependencies- Install npm from https://nodejs.org/
+npx create-react-app frontend
+cd frontend
+npm install axios
+npm install react-router-dom
+
+1)Select Frontend framework
+2)Create Components Folder to store all Components to render on App.js
+3)Create Navbar and Sidebar Component
+4)Sign up and Sign in page Component
+5)The sidebar should contain Create Vendor,Vendor List,Update Vendor, Delete Vendor and Send Email Component.
+6)Style the Web App as requirements
+
+Start the React development server: npm start
+
+
+#Code maintenance
+GIT account, daily updates.
+
+#Hardware Requirements
+2Cores 2Gb
+
+
