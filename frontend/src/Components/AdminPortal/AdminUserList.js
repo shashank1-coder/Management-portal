@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import axios from 'axios';
-import UserModal from './UserModal';
+import UserModal from '../Modals/UserModal';
 import "./AdminVendorList.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AdminUserList = () => {
     const [users, setUsers] = useState([]);
@@ -15,7 +17,8 @@ const AdminUserList = () => {
         name: '',
         username: '',
         password: '',
-        role: ''
+        role: '',
+        email:''
     });
 
     useEffect(() => {
@@ -52,8 +55,9 @@ const AdminUserList = () => {
         try {
             await axios.delete(`http://localhost:8000/users/${userId}`);
             fetchUsers();
+            toast.success('User deleted successfully!');
         } catch (error) {
-            console.error('Error deleting User:', error);
+            toast.error('Error deleting User.');
         }
     };
 
@@ -63,7 +67,8 @@ const AdminUserList = () => {
             name: user.name,
             username: user.username,
             password: user.password,
-            role: user.role
+            role: user.role,
+            email: user.email
         });
     };
 
@@ -95,10 +100,7 @@ const AdminUserList = () => {
     };
 
     const handleDeleteSelectedClick = async () => {
-        const confirmation = window.confirm("Are you sure you want to delete the selected users?");
-        if (!confirmation) {
-            return;
-        }
+    
         try {
             await Promise.all(
                 selectedUsers.map((userId) =>
@@ -107,8 +109,9 @@ const AdminUserList = () => {
             );
             fetchUsers();
             setSelectedUsers([]);
+            toast.success('User deleted successfully!');
         } catch (error) {
-            console.error('Error deleting selected Users:', error);
+            toast.error('Error deleting User.');
         }
     };
 
@@ -130,11 +133,50 @@ const AdminUserList = () => {
     }, [selectedUsers, users]);
 
 
-    const confirmDelete = (vendorId) => {
-        if (window.confirm("Are you sure you want to delete this vendor?")) {
-          handleDeleteClick(vendorId);
-        }
-      };
+// Custom confirmation component for the toast
+const ConfirmToast = ({ onConfirm, onCancel }) => (
+    <div>
+        <p>Are you sure you want to delete this User?</p>
+        <div>
+            <button onClick={onConfirm} className="toast-confirm-btn me-4">Yes</button>
+            <button onClick={onCancel} className="toast-cancel-btn">No</button>
+        </div>
+    </div>
+);
+
+const confirmDelete = (userId) => {
+    const toastId = toast(
+        <ConfirmToast
+            onConfirm={() => {
+                handleDeleteClick(userId);
+                toast.dismiss(toastId); // Dismiss the toast after confirmation
+            }}
+            onCancel={() => toast.dismiss(toastId)} // Dismiss the toast if canceled
+        />, {
+        autoClose: false, // Don't auto close, wait for user interaction
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        position: "top-center"
+    });
+};
+
+const confirmSelectedDelete = (userId) => {
+    const toastId = toast(
+        <ConfirmToast
+            onConfirm={() => {
+                handleDeleteSelectedClick(userId);
+                toast.dismiss(toastId); // Dismiss the toast after confirmation
+            }}
+            onCancel={() => toast.dismiss(toastId)} // Dismiss the toast if canceled
+        />, {
+        autoClose: false, // Don't auto close, wait for user interaction
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        position: "top-center"
+    });
+};
 
     return (
         <div className='dash-vendor-list'>
@@ -147,26 +189,26 @@ const AdminUserList = () => {
             <div>
                 <button className='admin form-btn' onClick={() => setShowModal(true)}>Add <i className="bi bi-person-plus-fill" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}></i></button>
             </div>
-            <br />
+            <div className='main-div'>
+            <div className='select-options'>
+                <input
+                    type="checkbox"
+                    checked={selectAll}
+                    onChange={handleSelectAllChange}
+                /> Select All
+                <button className='admin del btn' onClick={confirmSelectedDelete} disabled={selectedUsers.length === 0}>
+                    <i className="bi bi-trash-fill"></i>
+                </button>
+            </div>
             <div className='table-wrapper'>
-                <div className='select-options'>
-                    <input
-                        type="checkbox"
-                        checked={selectAll}
-                        onChange={handleSelectAllChange}
-                    /> Select All
-                    <button className='admin del btn' onClick={handleDeleteSelectedClick} disabled={selectedUsers.length === 0}>
-                        <i className="bi bi-trash-fill"></i>
-                    </button>
-                </div>
                 <table className='table'>
                     <thead>
                         <tr>
                             <th>Select</th>
                             <th>ID</th>
-                            <th className='expand'>Name</th>
-                            <th>Username</th>
-                            <th>Password</th>
+                            <th>Name</th>
+                            <th >Username</th>
+                            <th>Email</th>
                             <th>Role</th>
                             <th>Actions</th>
                         </tr>
@@ -181,15 +223,15 @@ const AdminUserList = () => {
                                         onChange={() => handleCheckboxChange(user.user_id)}
                                     />
                                 </td>
-                                <td>{user.User_id}</td>
+                                <td>{user.user_id}</td>
                                 <td>{user.name}</td>
                                 <td>{user.username}</td>
-                                <td>{user.password}</td>
+                                <td>{user.email}</td>
                                 <td>{user.role}</td>
                                 <td>
-                                    <span className='actions'>
+                                    <span className='user-actions'>
                                         <BsFillPencilFill onClick={() => handleEditClick(user)} />
-                                        <BsFillTrashFill className="delete-btn" onClick={() => confirmDelete(user.user_id)} />
+                                        <BsFillTrashFill className="ms-4 delete-btn" onClick={() => confirmDelete(user.user_id)} />
                                     </span>
                                 </td>
                             </tr>
@@ -201,14 +243,20 @@ const AdminUserList = () => {
                     <div className='vendor-update'>
                         <div className='update-form'>
                             <h2>Edit User</h2>
+                            <br />
                             <form>
                                 <div className='update-form-gr'>
                                     <input name="name" value={userData.name} onChange={handleChange} placeholder="Name" className='update-form-grp' />
                                     <input name="username" value={userData.username} onChange={handleChange} placeholder="Username" className='update-form-grp' />
-                                    <input name="password" value={userData.password} onChange={handleChange} placeholder="Password" className='update-form-grp' />
-                                    <input name="role" value={userData.role} onChange={handleChange} placeholder="Role" className='update-form-grp' />
-                                    <button onClick={handleUpdateClick}>Update</button>
-                                    <button className="cancel-btn" onClick={() => setEditingUser(null)}>Cancel</button>
+                                    {/* <input name="password" value={userData.password} onChange={handleChange} placeholder="Password" className='update-form-grp' /> */}
+                                    <input name="email" value={userData.email} onChange={handleChange} placeholder="Email" className='update-form-grp' />
+                                    {/* <input name="role" value={userData.role} onChange={handleChange} placeholder="Role" className='update-form-grp' /> */}
+                                    <select name='role' value={userData.role} onChange={handleChange} placeholder="Role" className='update-form-grp' style={{padding:"0.3rem 3.8rem"}}>
+                                        <option value='user'>User</option>
+                                        <option value='admin'>Admin</option>
+                                    </select>
+                                    <button  className="form-btn me-2" onClick={handleUpdateClick}>Update</button>
+                                    <button className="cancel-btn-user" onClick={() => setEditingUser(null)}>Cancel</button>
                                 </div>
                             </form>
                         </div>
@@ -222,6 +270,9 @@ const AdminUserList = () => {
                 />
             )}
         </div>
+        <ToastContainer position="bottom-left"  />
+        </div>
+        
     );
 };
 

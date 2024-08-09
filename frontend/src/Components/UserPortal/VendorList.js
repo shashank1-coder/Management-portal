@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import axios from 'axios';
-import Modal from '../AdminPortal/VendorModal';
+import VendorModal from '../Modals/VendorModal';
 import "../AdminPortal/AdminVendorList.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const VendorList = () => {
     const [vendors, setVendors] = useState([]);
@@ -54,8 +56,9 @@ const VendorList = () => {
         try {
             await axios.delete(`http://localhost:8000/vendors/${vendorId}`);
             fetchVendors();
+            toast.success('Vendor deleted successfully!');
         } catch (error) {
-            console.error('Error deleting vendor:', error);
+            toast.error('Error deleting vendor.');
         }
     };
 
@@ -99,10 +102,7 @@ const VendorList = () => {
     };
 
     const handleDeleteSelectedClick = async () => {
-        const confirmation = window.confirm("Are you sure you want to delete the selected users?");
-        if (!confirmation) {
-            return;
-        }
+       
         try {
             await Promise.all(
                 selectedVendors.map((vendorId) =>
@@ -111,8 +111,9 @@ const VendorList = () => {
             );
             fetchVendors();
             setSelectedVendors([]);
+            toast.success('Vendor deleted successfully!');
         } catch (error) {
-            console.error('Error deleting selected vendors:', error);
+            toast.error('Error deleting vendor.');
         }
     };
 
@@ -133,11 +134,50 @@ const VendorList = () => {
         }
     }, [selectedVendors, vendors]);
 
-    const confirmDelete = (vendorId) => {
-        if (window.confirm("Are you sure you want to delete this vendor?")) {
-          handleDeleteClick(vendorId);
-        }
-      };
+   // Custom confirmation component for the toast
+const ConfirmToast = ({ onConfirm, onCancel }) => (
+    <div>
+        <p>Are you sure you want to delete this Vendor?</p>
+        <div>
+            <button onClick={onConfirm} className="toast-confirm-btn me-4">Yes</button>
+            <button onClick={onCancel} className="toast-cancel-btn">No</button>
+        </div>
+    </div>
+);
+
+const confirmDelete = (vendorId) => {
+    const toastId = toast(
+        <ConfirmToast
+            onConfirm={() => {
+                handleDeleteClick(vendorId);
+                toast.dismiss(toastId); // Dismiss the toast after confirmation
+            }}
+            onCancel={() => toast.dismiss(toastId)} // Dismiss the toast if canceled
+        />, {
+        autoClose: false, // Don't auto close, wait for user interaction
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        position: "top-center"
+    });
+};
+
+const confirmSelectedDelete = (vendorId) => {
+    const toastId = toast(
+        <ConfirmToast
+            onConfirm={() => {
+                handleDeleteSelectedClick(vendorId);
+                toast.dismiss(toastId); // Dismiss the toast after confirmation
+            }}
+            onCancel={() => toast.dismiss(toastId)} // Dismiss the toast if canceled
+        />, {
+        autoClose: false, // Don't auto close, wait for user interaction
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        position: "top-center"
+    });
+};
 
     return (
         <div className='dash-vendor-list'>
@@ -150,18 +190,18 @@ const VendorList = () => {
             <div>
                 <button className='admin form-btn' onClick={() => setShowModal(true)}>Add <i className="bi bi-person-plus-fill" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}></i></button>
             </div>
-            <br />
-            <div className='table-wrapper'>
+            <div className = "main-div">
                 <div className='select-options'>
                     <input
                         type="checkbox"
                         checked={selectAll}
                         onChange={handleSelectAllChange}
                     /> Select All
-                    <button className='admin del btn' onClick={handleDeleteSelectedClick} disabled={selectedVendors.length === 0}>
+                    <button className='admin del btn' onClick={confirmSelectedDelete} disabled={selectedVendors.length === 0}>
                         <i className="bi bi-trash-fill"></i>
                     </button>
                 </div>
+            <div className='table-wrapper'>
                 <table className='table'>
                     <thead>
                         <tr>
@@ -196,7 +236,7 @@ const VendorList = () => {
                                 <td>
                                     <span className='actions'>
                                         <BsFillPencilFill onClick={() => handleEditClick(vendor)} />
-                                        <BsFillTrashFill className="delete-btn" onClick={() => confirmDelete(vendor.vendor_id)} />
+                                        <BsFillTrashFill className="ms-4 delete-btn" onClick={() => confirmDelete(vendor.vendor_id)} />
                                     </span>
                                 </td>
                             </tr>
@@ -216,7 +256,7 @@ const VendorList = () => {
                                     <input name="service_name" value={vendorData.service_name} onChange={handleChange} placeholder="Service" className='update-form-grp' />
                                     <input name="phone" value={vendorData.phone} onChange={handleChange} placeholder="Phone" className='update-form-grp' />
                                     <input name="email" value={vendorData.email} onChange={handleChange} placeholder="Email" className='update-form-grp' />
-                                    <button onClick={handleUpdateClick}>Update</button>
+                                    <button className="form-btn me-2" onClick={handleUpdateClick}>Update</button>
                                     <button className="cancel-btn" onClick={() => setEditingVendor(null)}>Cancel</button>
                                 </div>
                             </form>
@@ -226,10 +266,12 @@ const VendorList = () => {
             </div>
 
             {showModal && (
-                <Modal closeModal={() => setShowModal(false)}>
+                <VendorModal closeModal={() => setShowModal(false)}
                     fetchVendors={fetchVendors}
-                </Modal>
+                />
             )}
+        </div>
+        <ToastContainer position="bottom-left"  />
         </div>
     );
 };

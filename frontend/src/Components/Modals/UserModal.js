@@ -4,12 +4,12 @@ import './Modal.css';
 
 
 
-export const UserModal = ({ closeModal, fetchUsers }) => {
+export const UserModal = ({ closeModal, fetchUsers}) => {
     const [userData, setUserData] = useState({
         name: '',
         username: '',
         password: '',
-        role: ''
+        role: 'user' // Default value
     });
 
     const handleChange = (e) => {
@@ -21,6 +21,7 @@ export const UserModal = ({ closeModal, fetchUsers }) => {
         e.preventDefault();
         try {
             await axios.post('http://localhost:8000/create_user', userData);
+            
             fetchUsers(); // Refetch vendors after successful submission
             closeModal(); // Close modal after successful submission
         } catch (error) {
@@ -48,13 +49,20 @@ export const UserModal = ({ closeModal, fetchUsers }) => {
                     <input name='password' value={userData.password} onChange={handleChange} required />
                 </div>
                 <div className='form-group'>
+                    <label htmlFor='email'>Email</label>
+                    <input name='email' value={userData.email} onChange={handleChange} required />
+                </div>
+                <div className='form-group'>
                     <label htmlFor='role'>Role</label>
-                    <input name='role' value={userData.role} onChange={handleChange} required />
+                    <select name='role' value={userData.role} onChange={handleChange} required>
+                            <option value='user'>User</option>
+                            <option value='admin'>Admin</option>
+                        </select>
                 </div>
                 
                 
                     
-                    <button type='submit' className='form-btn'>Submit</button>
+                    <button type='submit' className='form-btn' style={{marginTop:"50px"}}>Submit</button>
                     {/* <button type='button' className='cancel-btn' onClick={closeModal}>Cancel</button> */}
                 </form>
             </div>

@@ -33,7 +33,7 @@ export const ServiceModal = ({ closeModal, fetchServices }) => {
                 <form onSubmit={handleSubmit}>
                   
                     <div className='form-group'>
-                        <label htmlFor='service_name'>Services</label>
+                        <label htmlFor='service_name'>Service</label>
                         <input name='service_name' value={serviceData.service_name} onChange={handleChange} required />
                     </div>
                 

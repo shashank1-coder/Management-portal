@@ -41,5 +41,9 @@
   margin-bottom: 0.2rem;
 } 
 
-
-
+select {
+border: 1px solid black;
+border-radius: 0.3rem;
+padding: 0.3rem;
+font-size: 1rem;
+}

@@ -26,10 +26,10 @@ function UserHeader({ user, handleLogout }) {
                 <span>Bitsilica</span>
             </div>
 
-            <form className="d-flex" role="search">
+            {/* <form className="d-flex" role="search">
             <input className="form-control me-2" type="search" placeholder= "Search" aria-label="Search"/>
             <button className="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            </form> */}
 
 
             <div className='login-section'>
@@ -41,8 +41,8 @@ function UserHeader({ user, handleLogout }) {
                     </a>
 
                     <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
-                    <li><a className="dropdown-item"  href="/"><button>Profile </button></a></li>
-                    <li><hr className="dropdown-divider"/></li>
+                    {/* <li><a className="dropdown-item"  href="/"><button>Profile </button></a></li>
+                    <li><hr className="dropdown-divider"/></li> */}
                     <li className="dropdown-item" ><button onClick={handleLogout} style={{color:"red"}}>Sign out <i class="bi bi-box-arrow-right" ></i></button></li>
                     </ul>
                         </div>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-import OrganizationModal from '../AdminPortal/OrganizationModal';
+import OrganizationModal from '../Modals/OrganizationModal';
 import axios from 'axios';
 import '../AdminPortal/AdminServices.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Organizations = ()=> {
@@ -10,6 +12,8 @@ const Organizations = ()=> {
     const [searchQuery, setSearchQuery] = useState('');
     const [editingOrg, setEditingOrg] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [selectedOrganization, setSelectedOrganizations] = useState([]);
+    const [selectAll, setSelectAll] = useState(false);
     const [orgData, setOrgData] = useState({
         organization_name: ''
     });
@@ -51,8 +55,9 @@ const Organizations = ()=> {
         try {
             await axios.delete(`http://localhost:8000/organizations/${orgId}`);
             fetchOrganizations();
+            toast.success('Organization deleted successfully!')
         } catch (error) {
-            console.error('Error deleting vendor:', error);
+            toast.error('Error deleting Organization.');
         }
     };
 
@@ -92,12 +97,100 @@ const Organizations = ()=> {
     // Perform search action here if needed
   };
 
-  const confirmDelete = (vendorId) => {
-    if (window.confirm("Are you sure you want to delete this vendor?")) {
-      handleDeleteClick(vendorId);
-    }
-  };
+//   const confirmDelete = (organizationId) => {
+//     if (window.confirm("Are you sure you want to delete this organization?")) {
+//       handleDeleteClick(organizationId);
+//     }
+//   };
 
+  const handleCheckboxChange = (organizationId) => {
+    setSelectedOrganizations((prevSelected) => {
+        if (prevSelected.includes(organizationId)) {
+            return prevSelected.filter(id => id !== organizationId);
+        } else {
+            return [...prevSelected, organizationId];
+        }
+    });
+};
+
+const handleDeleteSelectedClick = async () => {
+
+    try {
+        await Promise.all(
+            selectedOrganization.map((organizationId) =>
+                axios.delete(`http://localhost:8000/organizations/${organizationId}`)
+            )
+        );
+        fetchOrganizations();
+        setSelectedOrganizations([]);
+        toast.success('Organization deleted successfully!')
+    } catch (error) {
+        toast.error('Error deleting Organization.');
+    }
+};
+
+const handleSelectAllChange = () => {
+    if (selectAll) {
+        setSelectedOrganizations([]);
+    } else {
+        setSelectedOrganizations(filteredOrganizations.map(organization => organization.organization_id));
+    }
+    setSelectAll(!selectAll);
+};
+
+useEffect(() => {
+    if (selectedOrganization.length === organizations.length && organizations.length !== 0) {
+        setSelectAll(true);
+    } else {
+        setSelectAll(false);
+    }
+}, [selectedOrganization, organizations]);
+
+
+// Custom confirmation component for the toast
+const ConfirmToast = ({ onConfirm, onCancel }) => (
+    <div>
+        <p>Are you sure you want to delete this Organization?</p>
+        <div>
+            <button onClick={onConfirm} className="toast-confirm-btn me-4">Yes</button>
+            <button onClick={onCancel} className="toast-cancel-btn">No</button>
+        </div>
+    </div>
+);
+
+const confirmDelete = (orgId) => {
+    const toastId = toast(
+        <ConfirmToast
+            onConfirm={() => {
+                handleDeleteClick(orgId);
+                toast.dismiss(toastId); // Dismiss the toast after confirmation
+            }}
+            onCancel={() => toast.dismiss(toastId)} // Dismiss the toast if canceled
+        />, {
+        autoClose: false, // Don't auto close, wait for user interaction
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        position: "top-center"
+    });
+};
+
+const confirmSelectedDelete = (orgId) => {
+    const toastId = toast(
+        <ConfirmToast
+            onConfirm={() => {
+                handleDeleteSelectedClick(orgId);
+                toast.dismiss(toastId); // Dismiss the toast after confirmation
+            }}
+            onCancel={() => toast.dismiss(toastId)} // Dismiss the toast if canceled
+        />, {
+        autoClose: false, // Don't auto close, wait for user interaction
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        position: "top-center"
+    });
+};
 
     return (
         <div className='dash-org-list'>
@@ -107,12 +200,23 @@ const Organizations = ()=> {
                     </form>
             <h1 >Organizations List</h1>
             <button className='admin form-btn'  onClick={() => setShowModal(true)}>Add <i class=" bi bi-person-plus-fill " style={{marginLeft:"0.5rem", marginRight:"0.5rem" }}></i></button>           
-          <br/>
+            <div className = "main-div">
+            <div className='select-options'>
+                    <input
+                        type="checkbox"
+                        checked={selectAll}
+                        onChange={handleSelectAllChange}
+                    /> Select All
+                    <button className='admin del btn' onClick={confirmSelectedDelete} disabled={selectedOrganization.length === 0}>
+                        <i className="bi bi-trash-fill"></i>
+                    </button>
+                </div>
             <div className='table-wrapper'>
-             <div className='table-data'>
-            <table>
+             
+            <table className='table-data'>
                 <thead>
                     <tr>
+                        <th>Select</th>
                         <th >Organization ID</th>
                         <th className='expand-service'>Organization Name</th>
                         <th className='expand-service'>Actions</th>
@@ -121,12 +225,19 @@ const Organizations = ()=> {
                 <tbody>
                     {filteredOrganizations.map((organization) => (
                         <tr key={organization.organization_id}>
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedOrganization.includes(organization.organization_id)}
+                                    onChange={() => handleCheckboxChange(organization.organization_id)}
+                                />
+                            </td>
                             <td >{organization.organization_id}</td>
                             <td>{organization.organization_name}</td>
                             <td>
                                 <span className='actions'>
                                             <BsFillPencilFill onClick={() => handleEditClick(organization)} />
-                                            <BsFillTrashFill className="delete-btn" onClick={() => confirmDelete(organization.organization_id)} />
+                                            <BsFillTrashFill className="ms-4 delete-btn" onClick={() => confirmDelete(organization.organization_id)} />
                                 </span>
 
                             </td>
@@ -137,19 +248,19 @@ const Organizations = ()=> {
 
             {editingOrg && (
                     <div className='vendor-update'>
-                        <div className='update-form'>
-                            <h2>Edit Organization</h2>
-                            <form>
-                                <div className='update-form-gr'>
-                                    <input name="organization_name" value={orgData.organization_name} onChange={handleChange} placeholder="Organization" className='update-form-grp' />
-                                    <br />
-                                    <button type="button" onClick={handleUpdateClick} className='form-btn'>Update</button>
-                                    <button type="button" onClick={() => setEditingOrg(null)} className='cancel-btn'>Cancel</button>
-                                </div>
-                            </form>
-                        </div>
+                    <div className='update-form'>
+                        <h2>Edit Organization</h2>
+                        <form>
+                            <div className='update-form-gr'>
+                                <input name="organization_name" value={orgData.organization_name} onChange={handleChange} placeholder="Organization" className='update-form-grp' />
+                                <br />
+                                <button type="button" onClick={handleUpdateClick} className='form-btn me-2'>Update</button>
+                                <button type="button" onClick={() => setEditingOrg(null)} className='cancel-btn'>Cancel</button>
+                            </div>
+                        </form>
                     </div>
-                )}
+                </div>
+            )}
 
                 {showModal && (
                     <OrganizationModal closeModal={() => setShowModal(false)} fetchOrganizations={fetchOrganizations} />
@@ -160,11 +271,10 @@ const Organizations = ()=> {
 
             </div>
             </div>
+            <ToastContainer position="bottom-left"  />
             </div>
       
     );
 }
 
-export default Organizations;
-
-
+export default Organizations;
