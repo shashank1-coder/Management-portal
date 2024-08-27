@@ -5,3 +5,6 @@ python-jose
 python-multipart
 SQLAlchemy
 passlib[bcrypt]
+aiosqlite
+pydantic[email]
+
