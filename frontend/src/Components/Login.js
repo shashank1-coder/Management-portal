@@ -49,14 +49,14 @@ function Login({ setUser }) {
         type='text'
         id='login'
         className='fadeIn second'
-        placeholder='User ID'
+        placeholder='Enter ID'
         name="login"
         value={id}
         onChange={(e) => setId(e.target.value)}
       />
       <input
         type='password'
-        placeholder='Password'
+        placeholder='Enter Password'
         id="password" class="fadeIn third" 
         name="login"
         value={password}
