@@ -55,10 +55,9 @@ pip install fastapi uvicorn pydantic
 25)Read vendors by Service endpoint 
 26)Read vendors by Role endpoint
 27)Read vendors by org name  endpoint
-
-13)Read Users endpoint
-14)Update Users endpoint
-15)Delete Users endpoint
+28)Read Users endpoint
+29)Update Users endpoint
+30)Delete Users endpoint
 
 Start the FastAPI server: uvicorn app.main:app --reload
 
