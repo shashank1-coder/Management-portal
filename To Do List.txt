@@ -1,4 +1,4 @@
-#Requirements
+#Requirements of the Management portal @Bitsilica
 1)Vendors table with its contents as {id, Name, Organization, Role/Service, Email, Phone No}
 2)CRUD operations to Vendors
 3)Email endpoint which can fire emails to selected people with same content
