@@ -49,7 +49,7 @@ function Login({ setUser }) {
         type='text'
         id='login'
         className='fadeIn second'
-        placeholder='ID'
+        placeholder='User ID'
         name="login"
         value={id}
         onChange={(e) => setId(e.target.value)}
