@@ -1,3 +1,4 @@
+These are the endpoints of the project
 *Vendors:
 1)Read All Vendors: GET /
 2)Create Vendor: POST /vendors/
