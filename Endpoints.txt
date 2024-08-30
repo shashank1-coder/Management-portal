@@ -35,5 +35,8 @@ These are the endpoints of the project
 *Email
 24)Send Email
 
-
-
+*Users
+25)Read all: GET /users
+26)Read current user: GET /users/me
+27)Update: PUT /users/{user_id} 
+28)Delete: DELETE /users/{user_id}
