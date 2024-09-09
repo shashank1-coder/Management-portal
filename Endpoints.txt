@@ -40,3 +40,6 @@ These are the endpoints of the project
 26)Read current user: GET /users/me
 27)Update: PUT /users/{user_id} 
 28)Delete: DELETE /users/{user_id}
+
+*Token
+29)Create: POST /Token
