@@ -12,7 +12,8 @@ function App() {
     if (savedUser) {
       const userData = JSON.parse(savedUser);
       setUser(userData);
-      axios.get('http://localhost:8000/users/me', {
+      // axios.get('http://localhost:8000/users/me', {
+      axios.get('http://webserver1.bitsilica.com:8000/users/me', {
         headers: {
           Authorization: `Bearer ${userData.access_token}`
         }
