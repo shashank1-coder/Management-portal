@@ -6,6 +6,7 @@ import EmailModal from '../Modals/EmailModal'; // Import the EmailModal componen
 import "./AdminVendorList.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {api_url} from '../../config'
 
 const AdminVendorList = () => {
     const [vendors, setVendors] = useState([]);
@@ -30,7 +31,7 @@ const AdminVendorList = () => {
 
     const fetchVendors = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/');
+            const response = await axios.get('${api_url}/');
             setVendors(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching vendors:', error);
@@ -39,7 +40,7 @@ const AdminVendorList = () => {
 
     const handleUpdateClick = async () => {
         try {
-            await axios.put(`http://localhost:8000/vendors/${editingVendor}`, vendorData, {
+            await axios.put(`${api_url}:8000/vendors/${editingVendor}`, vendorData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
