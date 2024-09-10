@@ -5,6 +5,7 @@ import VendorModal from '../Modals/VendorModal';
 import "../AdminPortal/AdminVendorList.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {api_url} from '../../config'
 
 const VendorList = () => {
     const [vendors, setVendors] = useState([]);
@@ -28,7 +29,7 @@ const VendorList = () => {
 
     const fetchVendors = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/');
+            const response = await axios.get(`${api_url}/`);
             setVendors(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching vendors:', error);
@@ -37,7 +38,7 @@ const VendorList = () => {
 
     const handleUpdateClick = async () => {
         try {
-            await axios.put(`http://localhost:8000/vendors/${editingVendor}`, vendorData, {
+            await axios.put(`${api_url}/vendors/${editingVendor}`, vendorData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -54,7 +55,7 @@ const VendorList = () => {
 
     const handleDeleteClick = async (vendorId) => {
         try {
-            await axios.delete(`http://localhost:8000/vendors/${vendorId}`);
+            await axios.delete(`${api_url}/vendors/${vendorId}`);
             fetchVendors();
             toast.success('Vendor deleted successfully!');
         } catch (error) {
@@ -106,7 +107,7 @@ const VendorList = () => {
         try {
             await Promise.all(
                 selectedVendors.map((vendorId) =>
-                    axios.delete(`http://localhost:8000/vendors/${vendorId}`)
+                    axios.delete(`${api_url}/vendors/${vendorId}`)
                 )
             );
             fetchVendors();

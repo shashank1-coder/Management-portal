@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../App.css' // Import the CSS file for styling
+import {api_url} from '../../config'
 
 const UserHome = () => {
     const [totalVendors, setTotalVendors] = useState(0);
@@ -13,7 +14,7 @@ const UserHome = () => {
 
     const fetchTotalVendors = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/vendors/count');
+            const response = await axios.get(`${api_url}/vendors/count`);
             setTotalVendors(response.data.total_vendors);
         } catch (error) {
             setError('Error fetching total vendors');
@@ -25,7 +26,7 @@ const UserHome = () => {
 
     const fetchTotalServices = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/services/count');
+            const response = await axios.get(`${api_url}/services/count`);
             setTotalServices(response.data.total_services);
         } catch (error) {
             setError('Error fetching total services');
@@ -37,7 +38,7 @@ const UserHome = () => {
 
     const fetchTotalOrgs = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/organizations/count');
+            const response = await axios.get(`${api_url}/organizations/count`);
             setTotalOrgs(response.data.total_organizations);
         } catch (error) {
             setError('Error fetching total organizations');
@@ -50,7 +51,7 @@ const UserHome = () => {
 
     const fetchVendors = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/');
+            const response = await axios.get(`${api_url}/`);
             setVendors(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching vendors:', error);
