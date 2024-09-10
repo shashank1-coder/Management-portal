@@ -31,7 +31,7 @@ const AdminVendorList = () => {
 
     const fetchVendors = async () => {
         try {
-            const response = await axios.get('${api_url}/');
+            const response = await axios.get(`${api_url}/`);
             setVendors(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching vendors:', error);
@@ -40,7 +40,7 @@ const AdminVendorList = () => {
 
     const handleUpdateClick = async () => {
         try {
-            await axios.put(`${api_url}:8000/vendors/${editingVendor}`, vendorData, {
+            await axios.put(`${api_url}/vendors/${editingVendor}`, vendorData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -57,7 +57,7 @@ const AdminVendorList = () => {
 
     const handleDeleteClick = async (vendorId) => {
         try {
-            await axios.delete(`http://localhost:8000/vendors/${vendorId}`);
+            await axios.delete(`${api_url}/vendors/${vendorId}`);
             fetchVendors();
             toast.success('Vendor deleted successfully!');
         } catch (error) {
@@ -109,7 +109,7 @@ const AdminVendorList = () => {
         try {
             await Promise.all(
                 selectedVendors.map((vendorId) =>
-                    axios.delete(`http://localhost:8000/vendors/${vendorId}`)
+                    axios.delete(`${api_url}/vendors/${vendorId}`)
                 )
             );
             fetchVendors();

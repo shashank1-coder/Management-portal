@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Login from './Components/Login';
 import Dashboard from './Components/Dashboard';
-
+import {api_url} from './config'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -13,7 +13,7 @@ function App() {
       const userData = JSON.parse(savedUser);
       setUser(userData);
       // axios.get('http://localhost:8000/users/me', {
-      axios.get('http://webserver1.bitsilica.com:8000/users/me', {
+      axios.get(`${api_url}/users/me`, {
         headers: {
           Authorization: `Bearer ${userData.access_token}`
         }

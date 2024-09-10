@@ -34,7 +34,7 @@ const AdminSidebar = () => {
         <li>
           <Link to="/Organizations" className={`nav-link text-white ${location.pathname === '/Organizations' ? 'active' : ''}`}>
             <i className="bi bi-building me-2" width="16" height="16" style={{lineHeight:"2"}}></i>
-            Organization
+            Organizations
           </Link>
         </li>
         <li>

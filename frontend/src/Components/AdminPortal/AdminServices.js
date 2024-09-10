@@ -5,6 +5,7 @@ import axios from 'axios';
 import './AdminServices.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {api_url} from '../../config'
 
 const AdminServices = () => {
     const [services, setServices] = useState([]);
@@ -23,7 +24,7 @@ const AdminServices = () => {
 
     const fetchServices = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/services/');
+            const response = await axios.get(`${api_url}/services/`);
             setServices(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching courses:', error);
@@ -31,7 +32,7 @@ const AdminServices = () => {
     };
     const handleUpdateClick = async () => {
         try {
-            await axios.put(`http://localhost:8000/services/${editingService}`, serviceData, {
+            await axios.put(`${api_url}/services/${editingService}`, serviceData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -48,7 +49,7 @@ const AdminServices = () => {
 
     const handleDeleteClick = async (serviceId) => {
         try {
-            await axios.delete(`http://localhost:8000/services/${serviceId}`);
+            await axios.delete(`${api_url}/services/${serviceId}`);
             fetchServices();
             toast.success('Service deleted successfully!')
         } catch (error) {
@@ -102,7 +103,7 @@ const AdminServices = () => {
         try {
             await Promise.all(
                 selectedServices.map((serviceId) =>
-                    axios.delete(`http://localhost:8000/vendors/${serviceId}`)
+                    axios.delete(`${api_url}/vendors/${serviceId}`)
                 )
             );
             fetchServices();

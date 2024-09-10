@@ -5,6 +5,7 @@ import UserModal from '../Modals/UserModal';
 import "./AdminVendorList.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {api_url} from '../../config'
 
 const AdminUserList = () => {
     const [users, setUsers] = useState([]);
@@ -27,7 +28,7 @@ const AdminUserList = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/users');
+            const response = await axios.get(`${api_url}/users`);
             setUsers(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching Users:', error);
@@ -36,7 +37,7 @@ const AdminUserList = () => {
 
     const handleUpdateClick = async () => {
         try {
-            await axios.put(`http://localhost:8000/users/${editingUser}`, userData, {
+            await axios.put(`${api_url}/users/${editingUser}`, userData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -53,7 +54,7 @@ const AdminUserList = () => {
 
     const handleDeleteClick = async (userId) => {
         try {
-            await axios.delete(`http://localhost:8000/users/${userId}`);
+            await axios.delete(`${api_url}/users/${userId}`);
             fetchUsers();
             toast.success('User deleted successfully!');
         } catch (error) {
@@ -104,7 +105,7 @@ const AdminUserList = () => {
         try {
             await Promise.all(
                 selectedUsers.map((userId) =>
-                    axios.delete(`http://localhost:8000/Users/${userId}`)
+                    axios.delete(`${api_url}/Users/${userId}`)
                 )
             );
             fetchUsers();

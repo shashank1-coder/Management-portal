@@ -5,7 +5,7 @@ import axios from 'axios';
 import './AdminServices.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import {api_url} from '../../config'
 
 const AdminOrganizations = ()=> {
     const [organizations, setOrganizations] = useState([]);
@@ -26,7 +26,7 @@ const AdminOrganizations = ()=> {
 
     const fetchOrganizations = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/organizations/');
+            const response = await axios.get(`${api_url}/organizations/`);
             setOrganizations(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching Organizations:', error);
@@ -36,7 +36,7 @@ const AdminOrganizations = ()=> {
 
     const handleUpdateClick = async () => {
         try {
-            await axios.put(`http://localhost:8000/organizations/${editingOrg}`, orgData, {
+            await axios.put(`${api_url}/organizations/${editingOrg}`, orgData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -53,7 +53,7 @@ const AdminOrganizations = ()=> {
 
     const handleDeleteClick = async (orgId) => {
         try {
-            await axios.delete(`http://localhost:8000/organizations/${orgId}`);
+            await axios.delete(`${api_url}/organizations/${orgId}`);
             fetchOrganizations();
             toast.success('Organization deleted successfully!')
         } catch (error) {
@@ -112,7 +112,7 @@ const handleDeleteSelectedClick = async () => {
     try {
         await Promise.all(
             selectedOrgs.map((orgId) =>
-                axios.delete(`http://localhost:8000/vendors/${orgId}`)
+                axios.delete(`${api_url}/vendors/${orgId}`)
             )
         );
         fetchOrganizations();

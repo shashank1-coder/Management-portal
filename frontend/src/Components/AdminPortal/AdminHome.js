@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../App.css'; // Import the CSS file for styling
+import {api_url} from '../../config'
 
 const AdminHome = () => {
     const [totalVendors, setTotalVendors] = useState(0);
@@ -15,7 +16,7 @@ const AdminHome = () => {
 
     const fetchTotalVendors = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/vendors/count');
+            const response = await axios.get(`${api_url}/vendors/count`);
             setTotalVendors(response.data.total_vendors);
         } catch (error) {
             setError('Error fetching total vendors');
@@ -27,7 +28,7 @@ const AdminHome = () => {
 
     const fetchTotalServices = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/services/count');
+            const response = await axios.get(`${api_url}/services/count`);
             setTotalServices(response.data.total_services);
         } catch (error) {
             setError('Error fetching total services');
@@ -39,7 +40,7 @@ const AdminHome = () => {
 
     const fetchTotalOrgs = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/organizations/count');
+            const response = await axios.get(`${api_url}/organizations/count`);
             setTotalOrgs(response.data.total_organizations);
         } catch (error) {
             setError('Error fetching total organizations');
@@ -50,7 +51,7 @@ const AdminHome = () => {
 
     const fetchTotalUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/users/count');
+            const response = await axios.get(`${api_url}/users/count`);
             setTotalUsers(response.data.total_users);
         } catch (error) {
             setError('Error fetching total users');
@@ -61,7 +62,7 @@ const AdminHome = () => {
 
     const fetchVendors = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/');
+            const response = await axios.get(`${api_url}/`);
             setVendors(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching vendors:', error);
