@@ -72,6 +72,7 @@ function Login({ setUser }) {
         name="login"
         value={id}
         onChange={(e) => setId(e.target.value)}
+        maxLength="20"
       />
         {errorMessage === 'ID field is empty' && <p className="error-message">{errorMessage}</p>} {/* Error below ID */}
       <input
@@ -81,6 +82,7 @@ function Login({ setUser }) {
         name="login"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+         maxLength="50"
       />
       {errorMessage === 'Password field is empty' && <p className="error-message">{errorMessage}</p>} {/* Error below Password */}
       <input type="submit" class="fadeIn fourth" value="Log In"  onClick={handleLogin}/>
