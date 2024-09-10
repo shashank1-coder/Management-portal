@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Modal.css';
-
-
+import {api_url} from '../../config'
 
 export const ServiceModal = ({ closeModal, fetchServices }) => {
     const [serviceData, setServiceData] = useState({
@@ -17,7 +16,7 @@ export const ServiceModal = ({ closeModal, fetchServices }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8000/services/', serviceData);
+            await axios.post(`${api_url}/services/`, serviceData);
             fetchServices(); // Refetch vendors after successful submission
             closeModal(); // Close modal after successful submission
         } catch (error) {

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Modal.css';
-
-
+import {api_url} from '../../config'
 
 export const UserModal = ({ closeModal, fetchUsers}) => {
     const [userData, setUserData] = useState({
@@ -20,7 +19,7 @@ export const UserModal = ({ closeModal, fetchUsers}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8000/create_user', userData);
+            await axios.post(`${api_url}/create_user`, userData);
             
             fetchUsers(); // Refetch vendors after successful submission
             closeModal(); // Close modal after successful submission

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Modal.css';
-
-
+import {api_url} from '../../config'
 
 export const OrganizationModal = ({ closeModal, fetchOrganizations }) => {
     const [orgData, setOrgData] = useState({
@@ -17,7 +16,7 @@ export const OrganizationModal = ({ closeModal, fetchOrganizations }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8000/organizations/', orgData);
+            await axios.post(`${api_url}/organizations/`, orgData);
             fetchOrganizations(); // Refetch vendors after successful submission
             closeModal(); // Close modal after successful submission
         } catch (error) {

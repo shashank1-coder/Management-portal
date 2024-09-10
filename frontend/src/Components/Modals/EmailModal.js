@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './EmailModal.css'
-
+import {api_url} from '../../config'
 const EmailModal = ({ selectedVendors, closeModal }) => {
     const [emailContent, setEmailContent] = useState('');
     const [subject, setSubject] = useState('');
@@ -16,7 +16,7 @@ const EmailModal = ({ selectedVendors, closeModal }) => {
 
     const handleSend = async () => {
         try {
-            await axios.post('http://localhost:8000/send-gmail/', {
+            await axios.post(`${api_url}/send-gmail/`, {
                 vendor_ids: selectedVendors,
                 subject,
                 body: emailContent,
