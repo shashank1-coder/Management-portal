@@ -3,12 +3,30 @@ import './Login.css';
 import img from '../bitsilica_logo.jpeg'
 import {api_url} from '../config'
 
+
 function Login({ setUser }) {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
   
     const handleLogin = async (e) => {
       e.preventDefault(); // Prevent form submission
+      
+      if (!id && !password){
+        setErrorMessage('ID field and Password field is empty');
+        return;
+      }
+
+      if (!id){
+        setErrorMessage('ID field is empty');
+        return;
+      }
+      
+      if (!password){
+        setErrorMessage('Password field is empty');
+        return;
+      }
+
       try {
         // const response = await fetch('http://127.0.0.1:8000/token', {
           const response = await fetch(`${api_url}/token`, {
@@ -21,7 +39,6 @@ function Login({ setUser }) {
             password: password
           }),
         });
-  
         if (!response.ok) {
           throw new Error('Invalid credentials');
         }
@@ -56,6 +73,7 @@ function Login({ setUser }) {
         value={id}
         onChange={(e) => setId(e.target.value)}
       />
+        {errorMessage === 'ID field is empty' && <p className="error-message">{errorMessage}</p>} {/* Error below ID */}
       <input
         type='password'
         placeholder='Enter Password'
@@ -63,13 +81,12 @@ function Login({ setUser }) {
         name="login"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-    />
+      />
+      {errorMessage === 'Password field is empty' && <p className="error-message">{errorMessage}</p>} {/* Error below Password */}
       <input type="submit" class="fadeIn fourth" value="Log In"  onClick={handleLogin}/>
+      {errorMessage === 'ID field and Password field is empty' && <p className="error-message">{errorMessage}</p>}
       </form>
     </div>
-
-
-
 
     </div>
   );
