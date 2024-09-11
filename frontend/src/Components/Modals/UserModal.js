@@ -59,10 +59,10 @@ export const UserModal = ({ closeModal, fetchUsers}) => {
                         </select>
                 </div>
                 
-                
-                    
-                    <button type='submit' className='form-btn' style={{marginTop:"50px"}}>Submit</button>
-                    {/* <button type='button' className='cancel-btn' onClick={closeModal}>Cancel</button> */}
+                <div className='Buttons-align'>
+                    <button type='submit' className='form-btn me-4'>Submit</button>
+                    <button type='button' className='cancel-btn' onClick={closeModal}>Cancel</button>
+                    </div>     
                 </form>
             </div>
         </div>

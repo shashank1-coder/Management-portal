@@ -43,9 +43,10 @@ export const ServiceModal = ({ closeModal, fetchServices }) => {
                         <input name='service_name' value={serviceData.service_name} onChange={handleChange} required />
                     </div>
                 
-                    
-                    <button type='submit' className='form-btn'>Submit</button>
-                    {/* <button type='button' className='cancel-btn' onClick={closeModal}>Cancel</button> */}
+                    <div className='Buttons-align'>
+                    <button type='submit' className='form-btn me-4'>Submit</button>
+                    <button type='button' className='cancel-btn' onClick={closeModal}>Cancel</button>
+                    </div>     
                 </form>
             </div>
             <ToastContainer position="bottom-left" />

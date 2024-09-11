@@ -19,7 +19,7 @@
 }
 
 .modals .form-btn{
-  display: block;
+  /* display: block; */
   margin: auto;
   margin-top: 35px;
 }
@@ -46,4 +46,8 @@ border: 1px solid black;
 border-radius: 0.3rem;
 padding: 0.3rem;
 font-size: 1rem;
+}
+
+.Buttons-align {
+  text-align: center;
 }

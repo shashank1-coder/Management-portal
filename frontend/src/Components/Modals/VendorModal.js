@@ -59,8 +59,10 @@ export const VendorModal = ({ closeModal, fetchVendors }) => {
                         <label htmlFor='email'>Email</label>
                         <input name='email' value={vendorData.email} onChange={handleChange} required />
                     </div>
-                    <button type='submit' className='form-btn'>Submit</button>
-                    {/* <button type='button' className='cancel-btn' onClick={closeModal}>Cancel</button> */}
+                    <div className='Buttons-align'>
+                    <button type='submit' className='form-btn me-4'>Submit</button>
+                    <button type='button' className='cancel-btn' onClick={closeModal}>Cancel</button>
+                    </div>     
                 </form>
             </div>
         </div>
