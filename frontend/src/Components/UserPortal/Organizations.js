@@ -212,7 +212,7 @@ const confirmSelectedDelete = (orgId) => {
                     </button>
                 </div>
             <div className='table-wrapper'>
-             
+            {filteredOrganizations.length > 0 ? (
             <table className='table-data'>
                 <thead>
                     <tr>
@@ -245,7 +245,9 @@ const confirmSelectedDelete = (orgId) => {
                     ))}
                 </tbody>
             </table>
-
+             ) : (
+                <p className="no-results">No results found.</p> // Display this when no vendors match the search query
+            )}
             {editingOrg && (
                     <div className='vendor-update'>
                     <div className='update-form'>
