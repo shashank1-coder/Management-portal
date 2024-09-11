@@ -39,13 +39,16 @@ const Services = () => {
             });
             fetchServices();
             setEditingService(null);
+            toast.success('Service updated successfully!');
         } catch (error) {
-            console.error('Error updating organization name:', error);
-            if (error.response) {
-                console.error('Server response:', error.response.data);
+            if (error.response && error.response.status === 409) {
+                toast.error('Error: Service name already exists. Please choose a different name.');
+            } else {
+                console.error('Error updating service name:', error);
+                toast.error('Error updating service.');
             }
         }
-    };
+        };
 
     const handleDeleteClick = async (serviceId) => {
         try {

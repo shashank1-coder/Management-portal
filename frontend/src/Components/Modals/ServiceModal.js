@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Modal.css';
 import {api_url} from '../../config'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const ServiceModal = ({ closeModal, fetchServices }) => {
     const [serviceData, setServiceData] = useState({
@@ -17,13 +19,18 @@ export const ServiceModal = ({ closeModal, fetchServices }) => {
         e.preventDefault();
         try {
             await axios.post(`${api_url}/services/`, serviceData);
-            fetchServices(); // Refetch vendors after successful submission
+            fetchServices(); // Refetch services after successful submission
+            toast.success('Service added successfully!');
             closeModal(); // Close modal after successful submission
         } catch (error) {
             console.error('Error creating service:', error);
+            if (error.response && error.response.status === 409) {
+                toast.error('Error: Service name already exists. Please choose a different name.');
+            } else {
+                toast.error('Error creating service. Please try again.');
+            }
         }
     };
-
     return (
         <div className='modal-container' onClick={(e) => {
             if (e.target.className === "modal-container") closeModal(); 
@@ -41,6 +48,7 @@ export const ServiceModal = ({ closeModal, fetchServices }) => {
                     {/* <button type='button' className='cancel-btn' onClick={closeModal}>Cancel</button> */}
                 </form>
             </div>
+            <ToastContainer position="bottom-left" />
         </div>
     );
 };

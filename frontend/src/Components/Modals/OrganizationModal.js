@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Modal.css';
 import {api_url} from '../../config'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const OrganizationModal = ({ closeModal, fetchOrganizations }) => {
     const [orgData, setOrgData] = useState({
@@ -18,12 +20,17 @@ export const OrganizationModal = ({ closeModal, fetchOrganizations }) => {
         try {
             await axios.post(`${api_url}/organizations/`, orgData);
             fetchOrganizations(); // Refetch vendors after successful submission
+            toast.success('Organization added successfully!');
             closeModal(); // Close modal after successful submission
         } catch (error) {
-            console.error('Error creating vendor:', error);
+            console.error('Error creating organization:', error);
+            if (error.response && error.response.status === 409) {
+                toast.error('Error: Organization name already exists. Please choose a different name.');
+            } else {
+                toast.error('Error creating organization. Please try again.');
+            }
         }
     };
-
     return (
         <div className='modal-container' onClick={(e) => {
             if (e.target.className === "modal-container") closeModal(); 
@@ -41,6 +48,7 @@ export const OrganizationModal = ({ closeModal, fetchOrganizations }) => {
                     {/* <button type='button' className='cancel-btn' onClick={closeModal}>Cancel</button> */}
                 </form>
             </div>
+            <ToastContainer position="bottom-left" />
         </div>
     );
 };

@@ -39,12 +39,15 @@ const AdminServices = () => {
             });
             fetchServices();
             setEditingService(null);
-        } catch (error) {
+            toast.success('Service updated successfully!');
+    } catch (error) {
+        if (error.response && error.response.status === 409) {
+            toast.error('Error: Service name already exists. Please choose a different name.');
+        } else {
             console.error('Error updating service name:', error);
-            if (error.response) {
-                console.error('Server response:', error.response.data);
-            }
+            toast.error('Error updating service.');
         }
+    }
     };
 
     const handleDeleteClick = async (serviceId) => {

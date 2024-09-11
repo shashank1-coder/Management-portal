@@ -581,6 +581,13 @@ async def delete_role(role_id: int, db: AsyncSession = Depends(get_db)):
 # Create service
 @app.post("/services/", response_model=ServiceRead, status_code=status.HTTP_201_CREATED)
 async def create_service(service: ServiceCreate, db: AsyncSession = Depends(get_db)):
+      # Check if service with the same name already exists
+    existing_service = await db.execute(select(Service).where(Service.service_name == service.service_name))
+    if existing_service.scalar():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Service name already exists."
+        )
     db_service = Service(**service.dict())
     db.add(db_service)
     await db.commit()
@@ -614,12 +621,34 @@ async def read_service(service_id: int, db: AsyncSession = Depends(get_db)):
 # Update service
 @app.put("/services/{service_id}", response_model=ServiceRead)
 async def update_service(service_id: int, service: ServiceUpdate, db: AsyncSession = Depends(get_db)):
+    # result = await db.execute(select(Service).where(Service.service_id == service_id))
+    # db_service = result.scalars().first()
+    # if db_service is None:
+    #     raise HTTPException(status_code=404, detail="Service not found")
+    # for key, value in service.dict(exclude_unset=True).items():
+    #     setattr(db_service, key, value)
+    # await db.commit()
+    # await db.refresh(db_service)
+    # return db_service
+      # Check if the service to update exists
     result = await db.execute(select(Service).where(Service.service_id == service_id))
     db_service = result.scalars().first()
     if db_service is None:
         raise HTTPException(status_code=404, detail="Service not found")
+
+    # Check if the updated service name already exists
+    if service.service_name and service.service_name != db_service.service_name:
+        existing_service = await db.execute(select(Service).where(Service.service_name == service.service_name))
+        if existing_service.scalars().first():
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Service name already exists."
+            )
+    
+    # Apply updates
     for key, value in service.dict(exclude_unset=True).items():
         setattr(db_service, key, value)
+
     await db.commit()
     await db.refresh(db_service)
     return db_service
@@ -638,6 +667,13 @@ async def delete_service(service_id: int, db: AsyncSession = Depends(get_db)):
 # Create organization
 @app.post("/organizations/", response_model=OrganizationRead, status_code=status.HTTP_201_CREATED)
 async def create_organization(organization: OrganizationCreate, db: AsyncSession = Depends(get_db)):
+    # Check if the organization name already exists
+    existing_org_result = await db.execute(select(Organization).where(Organization.organization_name == organization.organization_name))
+    if existing_org_result.scalars().first():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Organization name already exists."
+        )
     db_organization = Organization(**organization.model_dump())
     db.add(db_organization)
     await db.commit()
@@ -671,12 +707,35 @@ async def read_all_organizations(db: AsyncSession = Depends(get_db)):
 # Update organization
 @app.put("/organizations/{org_id}", response_model=OrganizationRead)
 async def update_organization(org_id: int, organization: OrganizationUpdate, db: AsyncSession = Depends(get_db)):
+    # result = await db.execute(select(Organization).where(Organization.organization_id == org_id))
+    # db_organization = result.scalars().first()
+    # if db_organization is None:
+    #     raise HTTPException(status_code=404, detail="Organization not found")
+    # for key, value in organization.model_dump(exclude_unset=True).items():
+    #     setattr(db_organization, key, value)
+    # await db.commit()
+    # await db.refresh(db_organization)
+    # return db_organization
+      # Fetch the existing organization by ID
     result = await db.execute(select(Organization).where(Organization.organization_id == org_id))
     db_organization = result.scalars().first()
+    
     if db_organization is None:
         raise HTTPException(status_code=404, detail="Organization not found")
+    
+    # Check if the updated organization name already exists (if it's being updated)
+    if organization.organization_name != db_organization.organization_name:
+        existing_org_result = await db.execute(select(Organization).where(Organization.organization_name == organization.organization_name))
+        if existing_org_result.scalars().first():
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Organization name already exists."
+            )
+    
+    # Update the organization with new values
     for key, value in organization.model_dump(exclude_unset=True).items():
         setattr(db_organization, key, value)
+    
     await db.commit()
     await db.refresh(db_organization)
     return db_organization

@@ -43,13 +43,16 @@ const AdminOrganizations = ()=> {
             });
             fetchOrganizations();
             setEditingOrg(null);
+            toast.success('Organization updated successfully!');
         } catch (error) {
-            console.error('Error updating organization name:', error);
-            if (error.response) {
-                console.error('Server response:', error.response.data);
+            if (error.response && error.response.status === 409) {
+                toast.error('Error: Organization name already exists. Please choose a different name.');
+            } else {
+                console.error('Error updating Organization name:', error);
+                toast.error('Error updating Organization.');
             }
         }
-    };
+        };
 
     const handleDeleteClick = async (orgId) => {
         try {
