@@ -29,7 +29,15 @@ function Dashboard({ user , setUser}) {
     return <div>Loading...</div>; // or a better fallback like a spinner
   }
 
-  
+  // Custom 404 Page component
+  const NotFound = () => {
+    return (
+      <div className="not-found">
+        <h2>404 Error: Page Not Found</h2>
+        <p>Sorry, the page you're looking for does not exist.</p>
+      </div>
+    );
+  };
 
   return (
     <div className='dashboard'>       
@@ -68,6 +76,9 @@ function Dashboard({ user , setUser}) {
                      <AdminUserList/>
                     </div>} />
 
+                    <Route path="*" element={<div className='main-content'> 
+                      <NotFound />
+                    </div>} />
                     </Routes>
 
                     </>
@@ -103,6 +114,10 @@ function Dashboard({ user , setUser}) {
                     <Route path="/Services"
                      element={<div className='main-content'> 
                      <Services/>
+                    </div>} />
+
+                    <Route path="*" element={<div className='main-content'> 
+                      <NotFound />
                     </div>} />
 
                     </Routes>
