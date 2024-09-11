@@ -88,3 +88,10 @@
     width: auto;
     margin-left: 2%;
 }
+
+.no-results {
+    text-align: center;
+    margin-top: 250px;
+    font-size: 1.5em;
+    color: #020202; /* or any color you prefer */
+}

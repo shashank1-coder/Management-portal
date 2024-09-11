@@ -224,3 +224,10 @@ form.admin.d-flex {
     cursor: pointer;
     box-shadow: 0px 5px 5px #ccc;
 }
+
+.no-results {
+    text-align: center;
+    margin-top: 250px;
+    font-size: 1.5em;
+    color: #020202; /* or any color you prefer */
+}

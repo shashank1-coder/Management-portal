@@ -54,11 +54,11 @@ function Login({ setUser }) {
     
   return (
 
-    <div class="wrapper fadeInDown">
+    <div className="wrapper fadeInDown">
          <div id="formContent">
-         <h3 class="active"> Login </h3>
+         <h3 className="active"> Login </h3>
    
-    <div class="fadeIn first">
+    <div className="fadeIn first">
      <img src= {img} id="icon" alt="User Icon" />
        </div>
 
@@ -83,7 +83,7 @@ function Login({ setUser }) {
         onChange={(e) => setPassword(e.target.value)}
       />
       {errorMessage === 'Password field is empty' && <p className="error-message">{errorMessage}</p>} {/* Error below Password */}
-      <input type="submit" class="fadeIn fourth" value="Log In"  onClick={handleLogin}/>
+      <input type="submit" className="fadeIn fourth" value="Log In"  onClick={handleLogin}/>
       {errorMessage === 'ID field and Password field is empty' && <p className="error-message">{errorMessage}</p>}
       </form>
     </div>
